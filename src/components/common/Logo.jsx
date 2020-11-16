@@ -3,9 +3,7 @@ import { initialTheme } from '../../theme';
 import styled from 'styled-components';
 
 const LogoImage = styled.img`
-  background: ${initialTheme.primary};
-  height: 24px;
-  width: 24px;
+  width: 136px;
   `;
 
 const LogoContainer = styled.div`
@@ -19,11 +17,11 @@ const LogoContainer = styled.div`
   padding: 0 16px;
   `;
 
-function Logo() {
+function Logo({isSmall}) {
   return (
     <LogoContainer>
-      <LogoImage src='favicon.png' alt="logo" />
-      <span style={{margin: '16px 8px'}}><strong>VPC</strong> ONE</span>
+      {isSmall ? <LogoImage src='vpc-logo-small.svg' alt="logo" /> :
+      <LogoImage src='vpc-logo-big.svg' alt="logo" />}
     </LogoContainer>
   );
 }

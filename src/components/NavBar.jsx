@@ -105,9 +105,14 @@ function NavBar() {
       {navBar && <SideBarOverlay>
         <SideBarContainer className={navBar && 'active'}>
           <SideBarList className='nav-menu-items'>
-            <SideBarListItem>
-              <Logo/> <CloseSideBarIcon role='button' onClick={toggleNavBar}>X</CloseSideBarIcon>
-            </SideBarListItem>
+            {window.screen.width >= 540 ?
+              <SideBarListItem>
+                <Logo/>
+              </SideBarListItem>
+              : <SideBarListItem>
+                <Logo isSmall/> <CloseSideBarIcon role='button' onClick={toggleNavBar}>X</CloseSideBarIcon>
+              </SideBarListItem>
+            }
             {NavBarData.map((item, index) => {
               return (
                 <SideBarListItemText key={index}>

@@ -76,7 +76,6 @@ function Form({saving, errors = {}}) {
                      error={errors.name}
           />
           <Select name='vat'
-                  isSmall={true}
                   defaultOption='VAT'
                   options={ vatData.map(vat =>
                     ({ value: vat.code,
@@ -87,7 +86,6 @@ function Form({saving, errors = {}}) {
           <OptionalInfo>This field is optional</OptionalInfo>
           <Select name='phone'
                   id='phone'
-                  isSmall={true}
                   options={ prefixFlagData.map(flag =>
                     ({ value: flag.code,
                       text: flag.dial_code,
@@ -138,7 +136,6 @@ function Form({saving, errors = {}}) {
           <TextInput name='postal'
                      id='postal'
                      placeholder='PO'
-                     isSmall
                      error={errors.postalCode}
                      onChange={updateFormData}
           />
