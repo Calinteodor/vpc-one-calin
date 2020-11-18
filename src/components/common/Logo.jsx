@@ -1,9 +1,12 @@
 import React from 'react';
 import { initialTheme } from '../../theme';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const LogoImage = styled.img`
   width: 136px;
+  
+  ${({ isSmall }) => isSmall && css`
+  width: 88px;`}
   `;
 
 const LogoContainer = styled.div`
@@ -20,8 +23,8 @@ const LogoContainer = styled.div`
 function Logo({isSmall}) {
   return (
     <LogoContainer>
-      {isSmall ? <LogoImage src='vpc-logo-small.svg' alt="logo" /> :
-      <LogoImage src='vpc-logo-big.svg' alt="logo" />}
+      {isSmall ? <LogoImage src='vpc-logo-small.svg' alt="logo" isSmall={isSmall} /> :
+        <LogoImage src='vpc-logo-big.svg' alt="logo" />}
     </LogoContainer>
   );
 }

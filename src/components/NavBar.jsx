@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { NavLink } from "react-router-dom";
 import { NavBarData } from '../tools/NavBarData';
 import Logo from './common/Logo'
 import Header from './Header'
 import { initialTheme } from '../theme';
-import styled from 'styled-components';
 import Button from './common/Button'
+import styled from 'styled-components';
 
 const SideBarOverlay = styled.div`
   @media (min-width: 320px) and (max-width: 768px) {
@@ -27,16 +27,16 @@ const SideBarContainer = styled.nav`
   left: -100%;
   position: fixed;
   top: 0;
-  transition: 0.4s;
+  transition: left .3s ease;
+  z-index: 9;
   width: ${initialTheme.sidebarWidth};
   
   @media (min-width: 768px) and (max-width: 1200px){
     width: 256px;
   }
-  
-  &.active {
-    left: 0;
-  }
+    &.active {
+      left: 0;
+    }
 `;
 
 const SideBarList = styled.ul`
@@ -49,6 +49,7 @@ const SideBarListItem = styled.li`
     display: flex;
     height: 80px;
     justify-content: flex-start;
+    justify-content: space-between;
   `;
 
 const SideBarListItemText = styled(SideBarListItem)`
@@ -87,32 +88,45 @@ const SideBarListButton = styled(SideBarListItem)`
 const CloseSideBarIcon = styled.div`
   color: ${initialTheme.primary};
   cursor: pointer;
-  font-size: 16px;
-  margin-right: 16px;
+  font-size: 24px;
+  font-weight: 100;
+  margin-right: 32px;
 `
 
 function NavBar() {
   const activeStyle = {color: `${initialTheme.primary}`};
-  const [navBar, setNavBar] = useState(false);
+  const [showNavBar, setShowNavBar] = useState(true);
+  const [mobileView, setMobileView] = useState(false);
+  
+  useEffect(() => {
+    window.addEventListener('resize', updateViewState);
+  }, [mobileView])
+  
+  const updateViewState = () => {
+    if (!mobileView && document.documentElement.clientWidth < 540) {
+      setMobileView(true);
+      setShowNavBar(false);
+    } else if (mobileView && document.documentElement.clientWidth > 540) {
+      setMobileView(false);
+      setShowNavBar(true);
+    }
+  }
   
   const toggleNavBar = () => {
-    setNavBar(!navBar);
+    setShowNavBar(!showNavBar);
   };
   
   return (
     <>
       <Header onClick={toggleNavBar}/>
-      {navBar && <SideBarOverlay>
-        <SideBarContainer className={navBar && 'active'}>
+      {showNavBar && <SideBarOverlay>
+        <SideBarContainer className={showNavBar && 'active'}>
           <SideBarList className='nav-menu-items'>
-            {window.screen.width >= 540 ?
-              <SideBarListItem>
-                <Logo/>
-              </SideBarListItem>
-              : <SideBarListItem>
-                <Logo isSmall/> <CloseSideBarIcon role='button' onClick={toggleNavBar}>X</CloseSideBarIcon>
-              </SideBarListItem>
-            }
+            {mobileView ? <SideBarListItem>
+              <Logo isSmall={true}/> <CloseSideBarIcon role='button' onClick={toggleNavBar}>X</CloseSideBarIcon>
+            </SideBarListItem> : <SideBarListItem>
+              <Logo/>
+            </SideBarListItem>}
             {NavBarData.map((item, index) => {
               return (
                 <SideBarListItemText key={index}>

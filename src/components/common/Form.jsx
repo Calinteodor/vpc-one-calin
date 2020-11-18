@@ -46,6 +46,9 @@ function Form({saving, errors = {}}) {
   useEffect(() => {
     const formValues = Object.values(formData);
     const formKeysLength = Object.keys(formData).length > 7;
+    const countryNameList = prefixFlagData.map((item) => item);
+    
+    
     const formHasEmptyValues = formValues.some((i) => {
       return i === '';
     })
@@ -54,6 +57,12 @@ function Form({saving, errors = {}}) {
       setCanSubmit(true);
     }
   }, [formData])
+  
+  const getCountryFlag = (country) => {
+    fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
   
   const updateFormData = (e) => {
     const {name, value } = e.target;
@@ -88,8 +97,8 @@ function Form({saving, errors = {}}) {
                   id='phone'
                   options={ prefixFlagData.map(flag =>
                     ({ value: flag.code,
-                      text: flag.dial_code,
-                      image: flag.file_url})
+                      text: flag.dialCode,
+                      image: flag.emoji})
                   )}
                   error={errors.phone}
                   onChange={updateFormData}
